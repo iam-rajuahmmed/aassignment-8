@@ -10,13 +10,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'booknook_super_secure_secret_key_2
 
 // Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3001',
-    process.env.CLIENT_URL || '*'
-  ],
+  origin: (origin, callback) => {
+    // Dynamically allow requesting origin so Vercel preview/production and local domains work seamlessly
+    callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -587,6 +584,10 @@ app.get('/', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`BookNook server running on port: ${port}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`BookNook server running on port: ${port}`);
+  });
+}
+
+module.exports = app;
