@@ -110,6 +110,12 @@ export default function Footer() {
                   My Contributed Books
                 </a>
               </li>
+              <li>
+                <a href="/api" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Server API (JSON)
+                </a>
+              </li>
             </ul>
           </div>
 

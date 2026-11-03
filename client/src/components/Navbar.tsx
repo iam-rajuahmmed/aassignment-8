@@ -104,6 +104,18 @@ export default function Navbar() {
 
           {/* Right Controls: Theme Toggle & Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Live API Status Pill */}
+            <a
+              href="/api"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View Live Server API Status & JSON endpoints"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Live API
+            </a>
+
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
@@ -265,6 +277,20 @@ export default function Navbar() {
               </a>
             );
           })}
+
+          <a
+            href="/api"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between px-3 py-2.5 rounded-lg text-base font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-500/20"
+          >
+            <span>Live Server API</span>
+            <span className="flex items-center gap-1.5 text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Online
+            </span>
+          </a>
 
           <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
             {user ? (

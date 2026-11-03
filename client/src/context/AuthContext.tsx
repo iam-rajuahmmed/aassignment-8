@@ -16,7 +16,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_SERVER_URL 
+  ? process.env.NEXT_PUBLIC_SERVER_URL.replace(/\/$/, '') 
+  : '/api';
 
 function safeJsonParse<T>(value: string | null, fallback: T): T {
   if (!value || value === 'undefined' || value === 'null') return fallback;

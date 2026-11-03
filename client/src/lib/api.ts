@@ -1,6 +1,13 @@
 import { Book, Borrow } from '@/types';
 
-const API_BASE = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
+export function getApiUrl(path: string): string {
+  const envUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+  if (envUrl && envUrl.startsWith('http')) {
+    const base = envUrl.replace(/\/$/, '');
+    return `${base}${path.startsWith('/') ? path : `/${path}`}`;
+  }
+  return `/api${path.startsWith('/') ? path : `/${path}`}`;
+}
 
 async function safeParseResponse(res: Response): Promise<any> {
   const text = await res.text();
@@ -132,7 +139,11 @@ export async function getBooks(params?: {
   email?: string;
 }): Promise<Book[]> {
   try {
-    const url = new URL(`${API_BASE}/books`);
+    const apiPath = getApiUrl('/books');
+    const url = apiPath.startsWith('http')
+      ? new URL(apiPath)
+      : new URL(apiPath, typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+
     if (params?.limit) url.searchParams.append('limit', params.limit.toString());
     if (params?.sort) url.searchParams.append('sort', params.sort);
     if (params?.category && params.category !== 'All') url.searchParams.append('category', params.category);
@@ -169,7 +180,7 @@ export async function getBooks(params?: {
 // 2. GET /books/:id
 export async function getBookById(id: string): Promise<Book | null> {
   try {
-    const res = await fetch(`${API_BASE}/books/${id}`, { cache: 'no-store' });
+    const res = await fetch(getApiUrl(`/books/${id}`), { cache: 'no-store' });
     if (res.ok) {
       const data = await safeParseResponse(res);
       if (data && data.title) return data;
@@ -184,7 +195,7 @@ export async function getBookById(id: string): Promise<Book | null> {
 
 // 3. POST /books
 export async function addBook(bookData: Partial<Book>, token: string | null): Promise<{ success: boolean; message: string; book?: Book }> {
-  const res = await fetch(`${API_BASE}/books`, {
+  const res = await fetch(getApiUrl('/books'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -202,7 +213,7 @@ export async function addBook(bookData: Partial<Book>, token: string | null): Pr
 
 // 4. PATCH /books/:id
 export async function updateBook(id: string, bookData: Partial<Book>, token: string | null): Promise<{ success: boolean; message: string }> {
-  const res = await fetch(`${API_BASE}/books/${id}`, {
+  const res = await fetch(getApiUrl(`/books/${id}`), {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -220,7 +231,7 @@ export async function updateBook(id: string, bookData: Partial<Book>, token: str
 
 // 5. DELETE /books/:id
 export async function deleteBook(id: string, token: string | null): Promise<{ success: boolean; message: string }> {
-  const res = await fetch(`${API_BASE}/books/${id}`, {
+  const res = await fetch(getApiUrl(`/books/${id}`), {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -241,7 +252,7 @@ export async function borrowBook(borrowData: {
   bookImage: string;
   returnDate: string;
 }, token: string | null): Promise<{ success: boolean; message: string; borrow?: Borrow }> {
-  const res = await fetch(`${API_BASE}/borrows`, {
+  const res = await fetch(getApiUrl('/borrows'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -260,7 +271,7 @@ export async function borrowBook(borrowData: {
 // 7. GET /borrows
 export async function getUserBorrows(token: string | null): Promise<Borrow[]> {
   try {
-    const res = await fetch(`${API_BASE}/borrows`, {
+    const res = await fetch(getApiUrl('/borrows'), {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -280,7 +291,7 @@ export async function getUserBorrows(token: string | null): Promise<Borrow[]> {
 
 // 8. DELETE /borrows/:id
 export async function returnBook(borrowId: string, token: string | null): Promise<{ success: boolean; message: string }> {
-  const res = await fetch(`${API_BASE}/borrows/${borrowId}`, {
+  const res = await fetch(getApiUrl(`/borrows/${borrowId}`), {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`

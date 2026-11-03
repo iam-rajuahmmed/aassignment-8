@@ -1,17 +1,17 @@
 # BookNook – A Small Online Library (Assignment-8)
 
-**Live Client URL**: [https://booknook-online-library.vercel.app](https://booknook-online-library.vercel.app)  
-**Live Server API**: [https://booknook-server.onrender.com](https://booknook-server.onrender.com)
+- **Live Client URL (Website)**: [https://aassignment-8.vercel.app](https://aassignment-8.vercel.app)  
+- **Live Server API (JSON Endpoints)**: [https://aassignment-8.vercel.app/api](https://aassignment-8.vercel.app/api)  
 
-Welcome to **BookNook**, a full-stack online library application built with **Next.js (App Router)** and **Express.js with MongoDB**.
+> **Unified Single Deployment**: Client এবং Backend API উভয়ই একই সাথে Vercel-এ লাইভ। ওয়েবসাইটের নেভিগেশন বারে থাকা **"Live API"** বাটনে ক্লিক করে সরাসরি লাইভ সার্ভারের রাউট ও JSON রেসপন্স দেখা যাবে।
 
 ---
 
 ## 📁 Repository Structure
 ```
 Assignment-8/
-├── client/          # Next.js 14 (App Router) Frontend (15+ Git Commits)
-└── server/          # Express.js & MongoDB Backend (8+ Git Commits)
+├── client/          # Next.js 14 (App Router) Frontend + Built-in Serverless API Endpoints
+└── server/          # Express.js & MongoDB Standalone Backend (with vercel.json support)
 ```
 
 ---
